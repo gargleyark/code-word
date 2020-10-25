@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -13,12 +13,16 @@ import Menu from "@material-ui/icons/Menu";
 import AdminNavbarLinks from "./AdminNavbarLinks.js";
 import RTLNavbarLinks from "./RTLNavbarLinks.js";
 import Button from "components/CustomButtons/Button.js";
+import { SocketContext } from 'context/socket';
+  
+
 
 import styles from "assets/jss/material-dashboard-react/components/headerStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
+  const { adventure } = useContext(SocketContext);
   const classes = useStyles();
   function makeBrand() {
     var name;
@@ -42,6 +46,9 @@ export default function Header(props) {
           <Button color="transparent" href="#" className={classes.title}>
             {makeBrand()}
           </Button>
+          {
+            adventure?.teamMembers?.map(({ name, team }) => <span style={{ background: 'red', padding: 8, color: 'white', fontWeight: 700, marginRight: 10, opacity: 0.7, borderRadius: 4 }}>{name}</span>)
+          }
         </div>
         <Hidden smDown implementation="css">
           {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}

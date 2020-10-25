@@ -3,9 +3,15 @@ import { createTeams } from './teams';
 import { getWord } from './words';
 import { createStartTurn } from './activities'
 
-const getWordBlock = () => {
+const getWordBlock = (pastWords) => {
+    let word = getWord()
+
+    while(pastWords.indexOf(word) !== -1) {
+        word = getWord();
+    }
+
     const block = {
-        word: getWord(),
+        word,
     }
 
     return block
@@ -17,7 +23,7 @@ const getWordMap = (teams) => {
     let team2Count = 8
     let deathCount = 1
     for (let i = 0; i < 25; i++) {
-        const block = getWordBlock()
+        const block = getWordBlock(wordmap)
         wordmap.push(block)
     }
 
@@ -70,7 +76,10 @@ export const createWaitingRoom = (initiator, id) => {
 }
 
 export const resetToMeetingRoom = adventure => ({
-    teams: adventure.teams,
+    teams: adventure.teams.map(team => ({
+        ...team,
+        score: 0
+    })),
     teamMembers: adventure.teamMembers,
     winner: adventure.winner,
     id: adventure.id,

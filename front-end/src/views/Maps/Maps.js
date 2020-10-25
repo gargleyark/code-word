@@ -52,7 +52,7 @@ const useStyles = makeStyles(() => ({
     background: 'repeating-radial-gradient(bisque, antiquewhite 100%)'
   },
   unknown: {
-    background: 'repeating-radial-gradient( #ccc, lightblue #eee);'
+    background: 'repeating-radial-gradient( #ccc, #aaa 100%);'
   },
   inputs: {
     height: 80,
@@ -61,7 +61,10 @@ const useStyles = makeStyles(() => ({
   activity: {
     alignContent: 'baseline',
     overflow: 'scroll',
-    background: 'white'
+    background: 'white',
+    position: 'absolute',
+    right: '0px',
+    height: '80%'
   },
   winnerLoading: {
     display: 'flex',
@@ -72,6 +75,37 @@ const useStyles = makeStyles(() => ({
     marginTop: '20%',
     background: 'rgba(0,0,0,0.3)',
     padding: '20px',
+  },
+  revealed: {
+    position: 'relative',
+    '&:after': {
+      position: 'absolute',
+      content: '""',
+      background: 'black',
+      display: 'block',
+      width: 2,
+      height: '100%',
+      transform: 'rotate(-45deg)',
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      margin: 'auto'
+    },
+    '&:before': {
+      position: 'absolute',
+      content: '""',
+      background: 'black',
+      display: 'block',
+      width: 2,
+      height: '100%',
+      transform: 'rotate(45deg)',
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      margin: 'auto',
+    }
   }
 }));
 
@@ -117,7 +151,7 @@ export default function Maps() {
         {
           row.map(({ word, team: wordColor, revealed }) => <Grid item xs={2}>
             <Paper 
-              className={`${classes.paper} ${(clueGiver || revealed) && (classes[wordColor] || classes.empty) || classes.unknown} ${!clueGiver && turn?.team === team && classes.clickable}`}
+              className={`${classes.paper} ${clueGiver && revealed && classes.revealed} ${(clueGiver || revealed) && (classes[wordColor] || classes.empty) || classes.unknown} ${!clueGiver && turn?.team === team && classes.clickable}`}
               onClick={turn?.team === team && turn?.type === 'guess' && !clueGiver && (() => sendGuess({ word, guesser: username, id: adventure.id })) || undefined}
             >{word}</Paper>
           </Grid>)
@@ -176,7 +210,7 @@ type="number"
 InputLabelProps={{
   shrink: true,
 }}
-/></Box><Box p={4}><Button variant="contained" color="success" disabled={!clue.count || !clue.word} onClick={() => sendClue(clue)}>Send clue!</Button></Box></Grid></Card>}
+/></Box><Box p={4}><Button variant="contained" color="success" disabled={!clue.count || !clue.word || clue.word.match(/\s|\d|-/)} onClick={() => sendClue(clue)}>Send clue!</Button></Box></Grid></Card>}
           {turn?.team === team && turn?.type === 'guess' && !clueGiver && <Card><Box p={4}>{`Think about the clue and click on ${turn.clue.count} word${turn.clue.count > 1 ? 's' : ''} to confirm your guess`}</Box></Card>}
 
         </Grid>
