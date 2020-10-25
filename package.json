@@ -12,7 +12,7 @@
     "start:server": "node -r esm server/index.js",
     "start": "node -r esm server/index.js",
     "start:server:dev": "nodemon -r esm server/index.js",
-    "build": "cd ./front-end && npm install && npm run build",
+    "build": "",
     "build-windows": "cd ./front-end && npm install && npm run build-windows && cd .."
   }
 }
