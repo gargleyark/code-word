@@ -10,9 +10,9 @@
   },
   "scripts": {
     "start:server": "node -r esm server/index.js",
-    "start": "npm install && cd ./front-end && npm install && npm run build && cd .. && npm run start:server && node -r esm server/index.js",
+    "start": "node -r esm server/index.js",
     "start:server:dev": "nodemon -r esm server/index.js",
-    "build": "npm install && cd ./front-end && npm install && npm run build && cd .. && npm run start:server",
-    "build-windows": "npm install && cd ./front-end && npm install && npm run build-windows && cd .."
+    "build": "cd ./front-end && npm install && npm run build",
+    "build-windows": "cd ./front-end && npm install && npm run build-windows && cd .."
   }
 }
