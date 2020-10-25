@@ -26,12 +26,13 @@ const footerStyle = {
     padding: "15px 0",
     margin: "0",
     fontSize: "14px",
-    float: "right!important"
   },
   footer: {
     bottom: "0",
     borderTop: "1px solid " + grayColor[11],
     padding: "15px 0",
+    background: 'white',
+    textAlign: 'right',
     ...defaultFont
   },
   container,

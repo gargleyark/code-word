@@ -17,7 +17,7 @@ export default function Footer(props) {
       <div className={classes.container}>
         <p className={classes.right}>
           <span>
-            &copy; {1900 + new Date().getYear()} Heirs of John-the-Giant-Killer, Esq.
+            &copy; {1900 + new Date().getYear()} steelo did this <img height={20} src="https://www.cultofjeffgoldblum.com/index_files/jeffjobs.png" /> <img height={20} src="https://www.cultofjeffgoldblum.com/index_files/jeffjobs.png" /> <img height={20} src="https://www.cultofjeffgoldblum.com/index_files/jeffjobs.png" />
           </span>
         </p>
       </div>

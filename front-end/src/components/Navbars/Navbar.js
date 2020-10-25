@@ -47,7 +47,7 @@ export default function Header(props) {
             {makeBrand()}
           </Button>
           {
-            adventure?.teamMembers?.map(({ name, team }) => <span style={{ background: 'red', padding: 8, color: 'white', fontWeight: 700, marginRight: 10, opacity: 0.7, borderRadius: 4 }}>{name}</span>)
+            adventure?.teamMembers?.map(({ name, team }) => <span style={{ background: team, padding: 8, color: 'white', fontWeight: 700, marginRight: 10, opacity: 0.6, borderRadius: 4 }}>{name}</span>)
           }
         </div>
         <Hidden smDown implementation="css">

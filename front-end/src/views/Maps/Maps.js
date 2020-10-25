@@ -27,6 +27,8 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     display: 'flex',
     justifyContent: 'center',
+    fontWeight: 500,
+    textTransform: 'capitalize'
   },
   clickable: {
     cursor: 'pointer',
@@ -46,7 +48,6 @@ const useStyles = makeStyles(() => ({
   },
   black: {
     background: 'repeating-radial-gradient(black, gray 100%);',
-    color: 'white'
   },
   empty: {
     background: 'repeating-radial-gradient(bisque, antiquewhite 100%)'
@@ -153,7 +154,7 @@ export default function Maps() {
             <Paper 
               className={`${classes.paper} ${clueGiver && revealed && classes.revealed} ${(clueGiver || revealed) && (classes[wordColor] || classes.empty) || classes.unknown} ${!clueGiver && turn?.team === team && classes.clickable}`}
               onClick={turn?.team === team && turn?.type === 'guess' && !clueGiver && (() => sendGuess({ word, guesser: username, id: adventure.id })) || undefined}
-            >{word}</Paper>
+            ><span style={{ background: 'white', padding: '4px', borderRadius: '4px'}}>{word}</span></Paper>
           </Grid>)
         }
       </>
@@ -210,7 +211,7 @@ type="number"
 InputLabelProps={{
   shrink: true,
 }}
-/></Box><Box p={4}><Button variant="contained" color="success" disabled={!clue.count || !clue.word || clue.word.match(/\s|\d|-/)} onClick={() => sendClue(clue)}>Send clue!</Button></Box></Grid></Card>}
+/></Box><Box p={4}><Button variant="contained" color="success" disabled={!clue.count || !clue.word || clue.word.trim().match(/\s|\d|-/)} onClick={() => sendClue(clue.trim())}>Send clue!</Button></Box></Grid></Card>}
           {turn?.team === team && turn?.type === 'guess' && !clueGiver && <Card><Box p={4}>{`Think about the clue and click on ${turn.clue.count} word${turn.clue.count > 1 ? 's' : ''} to confirm your guess`}</Box></Card>}
 
         </Grid>

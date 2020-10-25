@@ -128,7 +128,7 @@ export default function Dashboard() {
         <Card chart><Box p={4} textAlign="center">
         <p>{adventure.teamMembers.length < 4 ? 'At least 4 players required to start!' : ''}</p>
           {roomOwner ?
-            <Button variant="contained" color="success" size="large" disabled={adventure.teamMembers.length < 1} onClick={startGame}>
+            <Button variant="contained" color="success" size="large" disabled={adventure.teamMembers.length <1} onClick={startGame}>
               Start
             </Button>
           : 'Only the room owner can start the game.'}</Box>
