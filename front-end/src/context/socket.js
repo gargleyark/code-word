@@ -46,7 +46,7 @@ export const SocketProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        const newSocket = io('http://localhost:3000');
+        const newSocket = io('https://code-word.herokuapp.com');
 
         setSocket(newSocket);
 
