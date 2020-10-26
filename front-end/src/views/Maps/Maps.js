@@ -211,7 +211,7 @@ type="number"
 InputLabelProps={{
   shrink: true,
 }}
-/></Box><Box p={4}><Button variant="contained" color="success" disabled={!clue.count || !clue.word || clue.word.trim().match(/\s|\d|-/)} onClick={() => sendClue(clue.word.trim())}>Send clue!</Button></Box></Grid></Card>}
+/></Box><Box p={4}><Button variant="contained" color="success" disabled={!clue.count || !clue.word || clue.word.trim().match(/\s|\d|-/)} onClick={() => sendClue({ word: clue.word.trim(), count: clue.count })}>Send clue!</Button></Box></Grid></Card>}
           {turn?.team === team && turn?.type === 'guess' && !clueGiver && <Card><Box p={4}>{`Think about the clue and click on ${turn.clue.count} word${turn.clue.count > 1 ? 's' : ''} to confirm your guess`}</Box></Card>}
 
         </Grid>

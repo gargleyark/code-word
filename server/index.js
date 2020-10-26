@@ -67,6 +67,8 @@ io.on('connection', function(socket){
   });
 
   socket.on('send-clue', ({ word, count, id }) => {
+    console.log(word, count, id)
+
     console.log('clue sent for', id)
     if (wordmaps[id]) {
       const turn = getNextTurn(wordmaps[id].turn, wordmaps[id].teams)
