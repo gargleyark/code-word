@@ -5,6 +5,8 @@ import ChartistGraph from "react-chartist";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
 import Warning from "@material-ui/icons/Warning";
@@ -54,7 +56,7 @@ const extraStyles = {
 const useStyles = makeStyles({...styles, ...extraStyles});
 
 export default function Dashboard() {
-  const { adventure, joinAdventure, startGame } = useContext(SocketContext);
+  const { adventure, joinAdventure, startGame, makeGuesser } = useContext(SocketContext);
   const classes = useStyles();
   const username = window.localStorage.getItem('username')
   const gameId = window.location.search.match(/\d+/);
@@ -73,13 +75,40 @@ export default function Dashboard() {
     return <Redirect to={`/adventure/game/?id=${adventure.id}`} />
   }
 
+  console.log(adventure)
+
+  const handleChange = (event, name) => {
+    console.log('handling change with', event.target.value)
+    makeGuesser({ value: event.target.value, name, id: adventure.id });
+  };
+
+  const validateTeamMembers = () => {
+    const rules = {};
+
+    adventure.teamMembers.forEach(({ clueGiver, team }) => rules[`${team}${clueGiver}`] = true)
+
+    return rules.redtrue && rules.bluetrue && rules.redfalse && rules.bluefalse
+  }
+
   const colourMap = {
     red: 'danger',
     blue: 'info'
   }
 
-  let roomOwner = adventure.teamMembers[0].name === username;
+  const roomOwner = adventure.teamMembers[0].name === username;
+
+  const options = [
+    {
+      value: true,
+      label: 'Clue Giver'
+    },
+    {
+      value: false,
+      label: 'Guesser'
+    },
+  ]
   
+  const teamsValid = adventure.teamMembers.length > 3 && validateTeamMembers();
 
   return (
     <div>
@@ -108,11 +137,22 @@ export default function Dashboard() {
                   <p className={classes.cardCategory}>
                   {!index && 'Waiting room owner'}&nbsp;
                   </p>
-                  {clueGiver ? <p className={classes.cardCategory}>
+                  
+                  {roomOwner ? <Select
+                    value={clueGiver}
+                    onChange={e => handleChange(e, name)}
+                    displayEmpty
+                    className={classes.selectEmpty}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                    {
+                      options.map(({ value, label}) => <MenuItem value={value}>{label}</MenuItem>)
+                    }
+                  </Select> : <>{clueGiver ? <p className={classes.cardCategory}>
                     Will be giving the clue
                   </p> : <p className={classes.cardCategory}>
                     Will be guessing
-                  </p>}
+                  </p>}</>}
                 </CardBody>
                 <CardFooter chart>
                   <div className={classes.stats}>
@@ -126,9 +166,9 @@ export default function Dashboard() {
       <GridContainer>
         <GridItem xs={12} sm={6} md={4} lg={2}>
         <Card chart><Box p={4} textAlign="center">
-        <p>{adventure.teamMembers.length < 4 ? 'At least 4 players required to start!' : ''}</p>
+        <p>{!teamsValid ? 'At least 4 players required to start, and each team needs a guesser and a clue giver' : ''}</p>
           {roomOwner ?
-            <Button variant="contained" color="success" size="large" disabled={adventure.teamMembers.length <1} onClick={startGame}>
+            <Button variant="contained" color="success" size="large" disabled={!teamsValid} onClick={startGame}>
               Start
             </Button>
           : 'Only the room owner can start the game.'}</Box>

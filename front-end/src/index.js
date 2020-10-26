@@ -33,6 +33,10 @@ const hist = createBrowserHistory();
 
 const gameId = window.location.search.match(/\d+\.\d+/);
 
+if (!window.location.href.match(/localhost/)) {
+  window.console.log = () => {}
+}
+
 ReactDOM.render(
   <Router history={hist}>
     <SocketProvider>

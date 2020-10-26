@@ -151,6 +151,21 @@ io.on('connection', function(socket){
     }
   });
 
+  socket.on('make-guesser', ({ value, name, id}) => {
+    if (wordmaps[id]) {
+      wordmaps[id].teamMembers = wordmaps[id].teamMembers.map(member => {
+        if (name === member.name) {
+          return {
+            ...member,
+            clueGiver: value
+          }
+        }
+        return member;
+      })
+      io.to(id).emit('change-adventure', wordmaps[id])
+    }
+  });
+
   socket.on('disconnect', () => {
     if (wordmaps[socket.gameId]) {
       wordmaps[socket.gameId].teamMembers = wordmaps[socket.gameId].teamMembers.filter(({ name }) => name !== socket.username)
