@@ -3,8 +3,8 @@ import { createTeams } from './teams';
 import { getWord } from './words';
 import { createStartTurn } from './activities'
 
-const getWordBlock = (pastWords) => {
-    let word = getWord()
+const getWordBlock = (pastWords, customWords) => {
+    let word = getWord(customWords)
 
     while(pastWords.indexOf(word) !== -1) {
         word = getWord();
@@ -17,24 +17,29 @@ const getWordBlock = (pastWords) => {
     return block
 }
 
-const getWordMap = (teams) => {
+const getWordMap = (teams, options) => {
     const wordmap = []
-    let team1Count = 9
-    let team2Count = 8
+    const totalWords = options && options.count ? options.count : 25
+    let team1Count = parseInt((totalWords) / 3) + 1
+    let team2Count = parseInt((totalWords) / 3)
     let deathCount = 1
-    for (let i = 0; i < 25; i++) {
-        const block = getWordBlock(wordmap)
+
+    for (let i = 0; i < totalWords; i++) {
+        const block = getWordBlock(wordmap, options && options.words || null)
         wordmap.push(block)
     }
 
     let index = 0
+
+    console.log(totalWords, team1Count, team2Count)
+
     while(team1Count || team2Count || deathCount) {
         // console.log(team1Count, team2Count, deathCount)
-        if (index > 24) {
+        if (index > (totalWords - 1)) {
             index = 0;
         }
 
-        console.log(index)
+        // console.log(index)
         if (!wordmap[index].team) {
             console.log('no team')
             if (Math.random() > 0.9 && deathCount) {
@@ -60,7 +65,7 @@ const getWordMap = (teams) => {
     return wordmap
 }
 
-export const createWaitingRoom = (initiator, id) => {
+export const createWaitingRoom = (initiator, id, options) => {
     const teams = createTeams();
 
     const game = {
@@ -71,7 +76,8 @@ export const createWaitingRoom = (initiator, id) => {
     return {
         ...game,
         stage: 'waitingroom',
-        id
+        id,
+        options
     };
 }
 
@@ -87,7 +93,7 @@ export const resetToMeetingRoom = adventure => ({
 });
 
 export const createWordMap = (game) => {
-    const wordMap = getWordMap(game.teams);
+    const wordMap = getWordMap(game.teams, game.options);
 
     return {
         wordMap,

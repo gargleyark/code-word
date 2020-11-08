@@ -22,36 +22,44 @@ app.get('/*', function(req, res){
 
 io.on('connection', function(socket){
 
-  socket.on('change-adventure', ({ name, id }) => {
+  socket.on('change-adventure', ({ name, id, options }) => {
     socket.username = name;
 
+    console.log(options)
+
     console.log('got', id, Object.keys(wordmaps))
-    if (!id) {
+    if (options && options.words && options.count > options.words.split(' ').length) {
+      socket.emit('failure', { message: 'You have not entered enough custom words'})
+    } else if (!id) {
       const newId = `${parseInt(Math.random() * 5000)}`
       console.log('creating adventure')
-      wordmaps[newId] = createWaitingRoom(name, newId);
+      wordmaps[newId] = createWaitingRoom(name, newId, options);
       socket.gameId = newId;
       socket.emit('change-adventure', wordmaps[newId]);
       socket.join(newId);
     } else if (id && wordmaps[id]) {
-      console.log('can join game')
+      if (wordmaps[id].stage === 'game') {
+        socket.emit('failure', { message: 'You cannot join a game that has already started'})
+      } else {
+        console.log('can join game')
 
-      let userExists;
+        let userExists;
 
-      wordmaps[id].teamMembers.forEach((member) => {
-        if (member.name === name) {
-          console.log('updating socket for', name)
-          userExists = true;
+        wordmaps[id].teamMembers.forEach((member) => {
+          if (member.name === name) {
+            console.log('updating socket for', name)
+            userExists = true;
+          }
+        });
+
+        if (!userExists) {
+          console.log('adding new user ', name)
+          wordmaps[id].teamMembers = updateTeamMembers(wordmaps[id].teamMembers, name)
         }
-      });
-
-      if (!userExists) {
-        console.log('adding new user ', name)
-        wordmaps[id].teamMembers = updateTeamMembers(wordmaps[id].teamMembers, name)
+        socket.gameId = id;
+        socket.join(id)
+        io.to(id).emit('change-adventure', wordmaps[id])
       }
-      socket.gameId = id;
-      socket.join(id)
-      io.to(id).emit('change-adventure', wordmaps[id])
     } else {
       socket.emit('failure', { message: 'Unable to find game'})
     }

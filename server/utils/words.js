@@ -1001,4 +1001,11 @@ const words = [
     'mark'
 ]
 
-export const getWord = () => words[parseInt(Math.random() * words.length)]
+export const getWord = (customWords) => {
+    if (customWords) {
+        const customWordsArray = customWords.split(' ')
+        return customWordsArray[parseInt(Math.random() * customWordsArray.length)]
+    }
+
+    return words[parseInt(Math.random() * words.length)]
+}
