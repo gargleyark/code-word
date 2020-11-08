@@ -22,7 +22,7 @@ let ps;
 const switchRoutes = (
   <Switch>
     {routes.map((prop, key) => {
-      if (prop.layout === "/adventure") {
+      if (prop.layout === "/") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -33,7 +33,7 @@ const switchRoutes = (
       }
       return null;
     })}
-    <Redirect from="/adventure" to="/adventure/create" />
+    <Redirect from="/" to="/create" />
   </Switch>
 );
 
@@ -60,7 +60,7 @@ export default function Admin({ ...rest }) {
       setMobileOpen(false);
     }
   };
-  const isNotLoginPage = window.location.pathname !== "/adventure/create";
+  const isNotLoginPage = window.location.pathname !== "/create";
   // initialize and destroy the PerfectScrollbar plugin
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {

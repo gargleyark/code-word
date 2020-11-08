@@ -38,60 +38,60 @@ import RTLPage from "views/RTLPage/RTLPage.js";
 
 const dashboardRoutes = [
   {
-    path: "/waitingroom",
+    path: "waitingroom",
     name: "Waiting to start",
     rtlName: "لوحة القيادة",
     icon: Dashboard,
     component: DashboardPage,
-    layout: "/adventure"
+    layout: "/"
   },
   {
-    path: "/create",
+    path: "create",
     name: "",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component: UserProfile,
-    layout: "/adventure"
+    layout: "/"
   },
   {
-    path: "/notifications",
+    path: "notifications",
     name: "Table List",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
     component: TableList,
-    layout: "/adventure"
+    layout: "/"
   },
   {
-    path: "/typography",
+    path: "typography",
     name: "Typography",
     rtlName: "طباعة",
     icon: LibraryBooks,
     component: Typography,
-    layout: "/adventure"
+    layout: "/"
   },
   {
-    path: "/icons",
+    path: "icons",
     name: "Icons",
     rtlName: "الرموز",
     icon: BubbleChart,
     component: Icons,
-    layout: "/adventure"
+    layout: "/"
   },
   {
-    path: "/game",
+    path: "game",
     name: "Game in progress!",
     rtlName: "خرائط",
     icon: LocationOn,
     component: Maps,
-    layout: "/adventure"
+    layout: "/"
   },
   {
-    path: "/notifications",
+    path: "notifications",
     name: "Notifications",
     rtlName: "إخطارات",
     icon: Notifications,
     component: NotificationsPage,
-    layout: "/adventure"
+    layout: "/"
   },
   {
     path: "/rtl-page",
@@ -102,12 +102,12 @@ const dashboardRoutes = [
     layout: "/rtl"
   },
   {
-    path: "/upgrade-to-pro",
+    path: "upgrade-to-pro",
     name: "Upgrade To PRO",
     rtlName: "التطور للاحترافية",
     icon: Unarchive,
     component: UpgradeToPro,
-    layout: "/adventure"
+    layout: "/"
   }
 ];
 

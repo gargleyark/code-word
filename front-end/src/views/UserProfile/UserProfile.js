@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 // @material-ui/core components
 import { makeStyles,  } from "@material-ui/core/styles";
 // core components
@@ -19,10 +19,15 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails'; 
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import MuiCard from '@material-ui/core/Card';
+import Box from '@material-ui/core/Box';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import avatar from "assets/img/logo_small.png";
 
-const styles = {
+const styles = theme => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
     margin: "0",
@@ -39,6 +44,9 @@ const styles = {
     marginBottom: "3px",
     textDecoration: "none"
   },
+  number: {
+    width: 200
+  },
   center: {
     textAlign: 'center'
   },
@@ -48,7 +56,11 @@ const styles = {
   footer: {
     flexDirection: 'column',
     margin: 0,
-    padding: 24
+    padding: 24,
+    [theme.breakpoints.up("md")]: {
+      flexDirection: 'row',
+      justifyContent: 'space-around'
+    }
   },
   greyColours: {
     background: 'royalblue',
@@ -58,15 +70,18 @@ const styles = {
     padding: 0
   },
   absolute: {
-    position: 'absolute'
+    position: 'absolute' 
   }
-};
+});
 
 const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
+  const [useCustomSettings, setUseCustomSettings] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [wordCount, setWordCount] = useState(25);
   const [inputId, setInputId] = useState('');
+  const [customWords, setCustomWords] = useState('');
   const [username, setUsername] = useState(window.localStorage.getItem('username') || '');
   const [expanded, setExpanded] = useState(username ? 'panel2' : 'panel1');
 
@@ -76,12 +91,14 @@ export default function UserProfile() {
 
   const classes = useStyles();
 
-  const { joinAdventure, redirect, adventure } = useContext(SocketContext);
+  const { joinAdventure, redirect, adventure, error } = useContext(SocketContext);
+  
+  useEffect(() => setIsLoading(false), [error])
   
 
   if (redirect) {
     console.log(adventure.id)
-    return <Redirect to={`/adventure/${adventure.stage}/?id=${adventure.id}`} />
+    return <Redirect to={`/${adventure.stage}/?id=${adventure.id}`} />
   }
 
   return (
@@ -132,14 +149,48 @@ export default function UserProfile() {
                         <CardFooter className={`${classes.footer} ${classes.greyColours}`}>
                  <Button variant="contained" color="danger" onClick={() => {
                     setIsLoading(true);
-                    joinAdventure(username);
+                    joinAdventure(username, null, useCustomSettings ? {
+                      words: customWords,
+                      count: wordCount,
+                    }: null);
                   }}>
                     {
                       isLoading ? 'Loading...' : 'Create room'
                     }
                   </Button>
+                  <MuiCard>
+                    <Box p={4} display="flex" flexDirection="column">
+                  <h4>Custom settings</h4>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={useCustomSettings}
+                        onChange={e => setUseCustomSettings(e.target.checked)}
+                        name="checkedB"
+                        color="primary"
+                      />
+                    }
+                    label="Use custom settings"
+                  />
+                  <TextField
+                    label="Custom words"
+                    disabled={!useCustomSettings}
+                    multiline
+                    defaultValue=""
+                    variant="outlined"
+                    onChange={e => setCustomWords(e.target.value)}
+                  />
+                  <p>Separate custom words with spaces</p>
+                  <TextField
+                    label="Words per game"
+                    disabled={!useCustomSettings}
+                    defaultValue={25}
+                    InputProps={{ inputProps: { min: 8, max: 25 } }}
+                    onChange={e => setWordCount(e.target.value)}
+                    type="number"
+                    className={classes.number}
+                  /></Box></MuiCard>
                 </CardFooter>,
-
                         <><GridContainer>
                           <GridItem xs={12} sm={12} md={5}>
                             <CustomInput

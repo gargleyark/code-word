@@ -18,9 +18,9 @@ export const SocketProvider = ({ children }) => {
     const [turn, setTurn] = useState();
     const [error, setError] = useState(null);
 
-    const joinAdventure = (name, id) => {
+    const joinAdventure = (name, id, options) => {
         if (socket) {
-            socket.emit('change-adventure', { name, id });
+            socket.emit('change-adventure', { name, id, options });
             console.log(name)
             setRoom(id);
         }
@@ -54,8 +54,8 @@ export const SocketProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        const newSocket = io('https://code-word.herokuapp.com');
-        // const newSocket = io('http://localhost:3000');
+        // const newSocket = io('https://code-word.herokuapp.com');
+        const newSocket = io('http://localhost:3000');
 
         setSocket(newSocket);
 
@@ -93,5 +93,5 @@ export const SocketProvider = ({ children }) => {
         }
     }, [socket]);
 
-    return <SocketContext.Provider value={{ socket, room, joinAdventure, redirect, adventure, stage, startGame, error, turn, sendClue, sendGuess, makeGuesser }}>{ children }</SocketContext.Provider>
+    return <SocketContext.Provider value={{ socket, room, joinAdventure, redirect, adventure, stage, startGame, error, turn, sendClue, sendGuess, makeGuesser, setError }}>{ children }</SocketContext.Provider>
 };

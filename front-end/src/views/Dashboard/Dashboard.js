@@ -68,11 +68,11 @@ export default function Dashboard() {
   }
 
   if (!adventure && !gameId) {
-    return <Redirect to="/adventure/create" />;
+    return <Redirect to="/create" />;
   }
 
   if (adventure.stage === 'game') {
-    return <Redirect to={`/adventure/game/?id=${adventure.id}`} />
+    return <Redirect to={`/game/?id=${adventure.id}`} />
   }
 
   console.log(adventure)

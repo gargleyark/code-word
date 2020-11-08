@@ -43,13 +43,13 @@ ReactDOM.render(
       <ErrorProvider>
         <TeamColor>
           <Switch>
-            <Route path="/adventure" component={Admin} />
+            <Route path="/" component={Admin} />
             <Route path="/create" component={Admin} />
             <Route path="/rtl" component={RTL} />
             {
-              gameId ? <Redirect to={`/adventure/dashboard/?id=${gameId[0]}`} /> : ''
+              gameId ? <Redirect to={`/dashboard/?id=${gameId[0]}`} /> : ''
             }
-            <Redirect from="/" to="/adventure/create" />
+            <Redirect from="/" to="/create" />
         </Switch>
         </TeamColor>
       </ErrorProvider>

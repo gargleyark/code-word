@@ -139,34 +139,18 @@ export default function Maps() {
   }
 
   if (!adventure && !gameId || !username) {
-    return <Redirect to="/adventure/create" />;
+    return <Redirect to="/create" />;
   }
 
   if (adventure?.winner) {
-    return <Redirect to={`/adventure/waitingroom?id=${gameId}`} />;
+    return <Redirect to={`/waitingroom?id=${gameId}`} />;
   }
-
-  const FormRow = ({row}) => {
-    return (
-      <>
-        {
-          row.map(({ word, team: wordColor, revealed }) => <Grid item xs={2}>
-            <Paper 
-              className={`${classes.paper} ${clueGiver && revealed && classes.revealed} ${(clueGiver || revealed) && (classes[wordColor] || classes.empty) || classes.unknown} ${!clueGiver && turn?.team === team && classes.clickable}`}
-              onClick={turn?.team === team && turn?.type === 'guess' && !clueGiver && (() => sendGuess({ word, guesser: username, id: adventure.id })) || undefined}
-            ><span style={{ background: 'white', padding: '4px', borderRadius: '4px'}}>{word}</span></Paper>
-          </Grid>)
-        }
-      </>
-    );
-  }
-
 
   console.log(turn, clueGiver, team)
 
   return (
     <>
-    <Modal
+      <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
@@ -188,10 +172,18 @@ export default function Maps() {
         
         {turn?.type === 'guess' && <Grid container classes={{root: classes.row}}><Card><h4 style={{margin: '15px'}}>{`${turn?.team} team guessing: ${turn?.clue?.word} (${turn.clue.count} word${turn.clue.count > 1 ? 's' : ''} left)`}</h4></Card></Grid>}
         {
+          adventure.wordMap.map(({ word, team: wordColor, revealed }) => <Grid item xs={6} sm={4} md={3} lg={2}>
+            <Paper 
+              className={`${classes.paper} ${clueGiver && revealed && classes.revealed} ${(clueGiver || revealed) && (classes[wordColor] || classes.empty) || classes.unknown} ${!clueGiver && turn?.team === team && classes.clickable}`}
+              onClick={turn?.team === team && turn?.type === 'guess' && !clueGiver && (() => sendGuess({ word, guesser: username, id: adventure.id })) || undefined}
+            ><span style={{ background: 'white', padding: '4px', borderRadius: '4px'}}>{word}</span></Paper>
+          </Grid>)
+        }
+        {/* {
           [0,4,8,12,16].map((position, index) => <Grid container item xs={12} spacing={3} classes={{root: classes.row}}>
             <FormRow row={[adventure.wordMap[position + index], adventure.wordMap[position + index + 1], adventure.wordMap[position + index + 2], adventure.wordMap[position + index + 3], adventure.wordMap[position + index + 4]] } />
           </Grid>)
-        }
+        } */}
         <Grid container classes={{root: classes.row}}>
           {turn?.team === team && turn?.type === 'clue' && clueGiver && <Card><Grid item xs={12} container classes={{root: classes.row}}><Box p={4}><TextField
   className={classes.inputs}

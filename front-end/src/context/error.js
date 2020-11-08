@@ -9,12 +9,13 @@ import { SocketContext } from 'context/socket';
 
 export const ErrorProvider = ({ children }) => {
     const [open, setOpen] = React.useState(false);
-    const { error } = useContext(SocketContext);
+    const { error, setError } = useContext(SocketContext);
 
     useEffect(() => setOpen(!!error), [error])
 
     const handleClose = (event, reason) => {
         setOpen(false);
+        setError(null);
     };
     
     function Alert(props) {
@@ -26,7 +27,7 @@ export const ErrorProvider = ({ children }) => {
         <Alert onClose={handleClose} severity="error">
           {error}
           {
-            !window.location.href.match(/adventure\/create/) && <Redirect to="adventure/create"/>
+            !window.location.href.match(/\/create/) && <Redirect to="adventure/create"/>
           }
         </Alert>
       </Snackbar></div>
