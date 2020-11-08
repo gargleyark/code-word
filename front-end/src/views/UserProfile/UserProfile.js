@@ -64,14 +64,15 @@ const styles = theme => ({
   },
   greyColours: {
     background: 'royalblue',
-    color: '#111111'
+    color: '#eee'
   },
   cardBody: {
     padding: 0
   },
   absolute: {
     position: 'absolute' 
-  }
+  },
+
 });
 
 const useStyles = makeStyles(styles);
@@ -197,10 +198,10 @@ export default function UserProfile() {
                               labelText="Room Name"
                               id="room"
                               inputProps={
-                                {onChange: e => setInputId(e.target.value)}
+                                {onChange: e => setInputId(e.target.value), autoFocus: true, className: classes.greyColours}
                               }
                               formControlProps={{
-                                fullWidth: true
+                                fullWidth: true,
                               }}
                             />
                           </GridItem>
