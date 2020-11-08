@@ -113,7 +113,7 @@ export default function UserProfile() {
               </a>
             </CardAvatar>
             <CardHeader>
-              <h2 className={classes.center}>Code Word</h2>
+              <h2 className={classes.center}>Clue Word 🕵️</h2>
               <p className={`${classes.center} ${classes.subtitle}`}>A secret game of hidden words.</p>
             </CardHeader>
             <CardBody className={classes.cardBody}>
