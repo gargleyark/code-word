@@ -67,7 +67,7 @@ export default function Dashboard() {
     return <div>Joining adventure...</div>
   }
 
-  if (!adventure && !gameId) {
+  if (!adventure && !gameId || !username) {
     return <Redirect to="/create" />;
   }
 
