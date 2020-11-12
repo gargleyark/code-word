@@ -73,7 +73,7 @@ export default function Dashboard() {
 
    
   if (!username) {
-    setError('Please choose set a username before joining a game.')
+    setError('Please choose a username before joining a game.')
     return <Redirect to="/create" />;
   }
 
