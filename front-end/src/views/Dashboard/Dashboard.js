@@ -56,7 +56,7 @@ const extraStyles = {
 const useStyles = makeStyles({...styles, ...extraStyles});
 
 export default function Dashboard() {
-  const { adventure, joinAdventure, startGame, makeGuesser } = useContext(SocketContext);
+  const { adventure, joinAdventure, startGame, makeGuesser, setError } = useContext(SocketContext);
   const classes = useStyles();
   const username = window.localStorage.getItem('username')
   const gameId = window.location.search.match(/\d+/);
@@ -67,9 +67,16 @@ export default function Dashboard() {
     return <div>Joining adventure...</div>
   }
 
-  if (!adventure && !gameId || !username) {
+  if (!adventure && !gameId) {
     return <Redirect to="/create" />;
   }
+
+   
+  if (!username) {
+    setError('Please choose set a username before joining a game.')
+    return <Redirect to="/create" />;
+  }
+
 
   if (adventure.stage === 'game') {
     return <Redirect to={`/game/?id=${adventure.id}`} />
